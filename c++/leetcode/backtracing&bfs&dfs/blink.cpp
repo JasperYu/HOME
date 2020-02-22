@@ -49,7 +49,7 @@ void bfs() {
         int tc = head.count +1 ;//如果是head count ++ 会出错！因为这个位置比较靠前，是希望动作+1 是针对不同方向的消耗，而这里后面可能会进入if （head.x等的判断）
         if(matrix[head.x][head.y]==2){
             tc++;
-            matrix[head.x][head.y]=0;//这个带上会出错
+            matrix[head.x][head.y]=0;//这个带上会出错，同一个路径返回不会踩到！但是其他路径过来还是会踩到，所以不能为0
         }
         if(head.x== nums -1 && head.y == nums-1){
             if(head.count < min_value){
