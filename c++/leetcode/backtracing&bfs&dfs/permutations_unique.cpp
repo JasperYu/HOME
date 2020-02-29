@@ -13,7 +13,7 @@
 //[3,1,2],
 //[3,2,1]
 //]
-//46. https://leetcode-cn.com/problems/permutations/solution/hui-su-suan-fa-python-dai-ma-java-dai-ma-by-liweiw/
+//47. https://leetcode-cn.com/problems/permutations-ii/solution/hui-su-suan-fa-python-dai-ma-java-dai-ma-by-liwe-2/
 #include <vector>
 #include <iostream>
 std::vector<int> input;
@@ -27,6 +27,9 @@ void helper(std::vector<int>& nums,std::vector<int> & path,std::vector<std::vect
         if(visited[i] == true){
             continue;
         }
+        if(i>=1 && nums[i]== nums[i-1] && visited[i-1] == false){
+            continue;
+        }
         visited[i] = true;
         path.push_back(nums[i]);
         helper(nums,path,rst,visited);
@@ -35,7 +38,8 @@ void helper(std::vector<int>& nums,std::vector<int> & path,std::vector<std::vect
     }
     return ;
 }
-std::vector<std::vector<int>> permute(std::vector<int>& nums) {
+std::vector<std::vector<int>> permute_unique(std::vector<int>& nums) {
+    sort(nums.begin(),nums.end());
     std::vector<std::vector<int>> rst;
     std::vector<int> path;
     std::vector<bool> visited(nums.size(), false);
@@ -60,7 +64,7 @@ int main(){
         std::cin >> temp ;
         input.push_back(temp);
     }
-    rst = permute(input);
+    rst = permute_unique(input);
     for_each (rst.begin(), rst.end(), print_vector);
     return 0 ;
 }
