@@ -13,35 +13,40 @@
 //[3,1,2],
 //[3,2,1]
 //]
-//77. https://leetcode-cn.com/problems/combinations/solution/hui-su-suan-fa-jian-zhi-python-dai-ma-java-dai-ma-/
+//39. https://leetcode-cn.com/problems/combination-sum/solution/hui-su-suan-fa-jian-zhi-python-dai-ma-java-dai-m-2/
 #include <vector>
 #include <iostream>
 std::vector<int> input;
 
-void helper(int start,int k , int n ,std::vector<int>& path,std::vector<std::vector<int>>& rst){
-    if(path.size() == k ){
+void helper(std::vector<int>& candidates,int index ,int target , int sum,std::vector<int>& path,std::vector<std::vector<int>> &rst ){
+    if(target == sum)
+    {
         rst.push_back(path);
         return;
     }
-    if(start > n ){ // 一定不能=n，因为1 进入后进入队列，然后 2进入搜索，进入队列的时候已经在for循环了，所以3、4里面没有把4放进去，然后4推进去才能判断size
-        return ;
-    }
-    for(int i = start ; i <= n ; i++ ){
-        path.push_back(i);
-        helper(i+1,k,n,path,rst);
+
+    for(int i = index; i < candidates.size(); i++){
+        if( sum + candidates[i]  > target){
+            return;//if sort
+        }
+        sum = sum + candidates[i] ;
+        path.push_back(candidates[i]);
+        helper(candidates,i,target,sum,path,rst);
+        sum = sum - candidates[i] ;
         path.pop_back();
     }
-
+    return;//
 }
 
-std::vector<std::vector<int>> combine(int n,int k) {
-    //sort(nums.begin(),nums.end());
-    std::vector<std::vector<int>> rst;
+std::vector<std::vector<int>> combinationSum(std::vector<int>& candidates, int target) {
     std::vector<int> path;
-    //std::vector<bool> visited(nums.size(), false);
-    helper(1,k,n,path,rst);
+    std::vector<std::vector<int>> rst ;
+    int sum = 0 ;
+    sort(candidates.begin(),candidates.end());
+    helper(candidates,0,target,sum,path,rst);
     return rst;
 }
+
 void print_int (int i) {  // function:
     std::cout << i << " ";
 }
@@ -52,13 +57,22 @@ void print_vector (std::vector<int> v) {  // function:
     }
     std::cout << std::endl;
 }
+
 int main(){
     int n;
     std::cin >> n ;
-    int k;
-    std::cin >> k ;
+    std::vector<int> can;
+    for(int i = 0 ; i < n ; i ++){
+        int temp ;
+        std::cin >> temp ;
+        can.push_back(temp);
+    }
+    int target ;
+    std::cin >> target;
+
     std::vector<std::vector<int>> rst;
-    rst = combine(n,k);
+
+    rst = combinationSum(can,target);
     for_each (rst.begin(), rst.end(), print_vector);
     return 0 ;
 }
